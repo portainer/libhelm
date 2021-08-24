@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/portainer/libhelm"
-	"github.com/portainer/libhelm/helm/options"
-	"github.com/portainer/libhelm/helm/release"
+	"github.com/portainer/libhelm/options"
+	"github.com/portainer/libhelm/release"
 )
 
 const (
