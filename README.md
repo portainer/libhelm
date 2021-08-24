@@ -2,8 +2,8 @@
 
 A helm abstraction for Portainer.
 
-## TODO
+## Installation
 
-- [] migrate code
-- [] migrate tests
-- [] migrate binary/deployment scripts
+```sh
+go get github.com/portainer/libhelm
+```
