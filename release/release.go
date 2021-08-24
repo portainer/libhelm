@@ -7,6 +7,18 @@ import (
 	"time"
 )
 
+// ReleaseElement is a struct that represents a release
+// This is the official struct from the helm project (golang codebase) - exported
+type ReleaseElement struct {
+	Name       string `json:"name"`
+	Namespace  string `json:"namespace"`
+	Revision   string `json:"revision"`
+	Updated    string `json:"updated"`
+	Status     string `json:"status"`
+	Chart      string `json:"chart"`
+	AppVersion string `json:"app_version"`
+}
+
 // Release describes a deployment of a chart, together with the chart
 // and the variables used to deploy that chart.
 type Release struct {

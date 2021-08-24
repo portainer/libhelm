@@ -32,7 +32,7 @@ func Test_Install(t *testing.T) {
 	ensureIntegrationTest(t)
 	is := assert.New(t)
 
-	hbpm, _ := NewHelmBinaryPackageManager("/tmp/abc")
+	hbpm := NewHelmBinaryPackageManager("/tmp/abc")
 
 	t.Run("successfully installs nginx chart with name test-nginx", func(t *testing.T) {
 		// helm install test-nginx --repo https://charts.bitnami.com/bitnami nginx

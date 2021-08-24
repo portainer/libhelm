@@ -7,6 +7,8 @@ import (
 
 // HelmPackageManager represents a service that interfaces with Helm
 type HelmPackageManager interface {
-	Install(installOpts options.InstallOptions) (*release.Release, error)
 	Show(showOpts options.ShowOptions) ([]byte, error)
+	List(listOpts options.ListOptions) ([]release.ReleaseElement, error)
+	Install(installOpts options.InstallOptions) (*release.Release, error)
+	Uninstall(uninstallOpts options.UninstallOptions) error
 }
