@@ -1,4 +1,4 @@
-package common
+package libhelm
 
 // Package common implements common functionality for the helm.
 // The functionality does not rely on the implementation of `HelmPackageManager`
