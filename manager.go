@@ -14,7 +14,7 @@ type HelmConfig struct {
 var errBinaryPathNotSpecified = errors.New("binary path not specified")
 
 // NewHelmManager returns a new instance of HelmPackageManager based on HelmConfig
-func NewHelmManager(config HelmConfig) (HelmPackageManager, error) {
+func NewHelmPackageManager(config HelmConfig) (HelmPackageManager, error) {
 	if config.BinaryPath != "" {
 		return binary.NewHelmBinaryPackageManager(config.BinaryPath), nil
 	}
