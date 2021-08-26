@@ -96,6 +96,19 @@ func Test_Install(t *testing.T) {
 
 		is.NoError(err, "should successfully install release", release)
 	})
+
+	t.Run("successfully installs portainer chart with name portainer-test", func(t *testing.T) {
+		// helm install portainer-test portainer --repo https://portainer.github.io/k8s/
+		installOpts := options.InstallOptions{
+			Name:  "portainer-test",
+			Chart: "portainer",
+			Repo:  "https://portainer.github.io/k8s/",
+		}
+		release, err := hbpm.Install(installOpts)
+		defer hbpm.run("uninstall", []string{installOpts.Name})
+
+		is.NoError(err, "should successfully install release", release)
+	})
 }
 
 func ensureIntegrationTest(t *testing.T) {
