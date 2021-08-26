@@ -1,11 +1,9 @@
 package release
 
+import "github.com/portainer/libhelm/time"
+
 // Release is the struct that holds the information for a helm release.
 // The struct definitions have been copied from the offical Helm Golang client/library.
-
-import (
-	"time"
-)
 
 // ReleaseElement is a struct that represents a release
 // This is the official struct from the helm project (golang codebase) - exported
