@@ -2,6 +2,8 @@ package binary
 
 import (
 	"os"
+	"os/exec"
+	"path/filepath"
 	"testing"
 
 	"github.com/portainer/libhelm/options"
@@ -28,11 +30,27 @@ func createValuesFile(values string) (string, error) {
 	return file.Name(), nil
 }
 
+// getHelmBinaryPath is helper function to get local helm binary path (if helm is in path)
+func getHelmBinaryPath() (string, error) {
+	path, err := exec.LookPath("helm")
+	if err != nil {
+		return "", err
+	}
+	dir, err := filepath.Abs(filepath.Dir(path))
+	if err != nil {
+		return "", err
+	}
+	return dir, nil
+}
+
 func Test_Install(t *testing.T) {
 	ensureIntegrationTest(t)
 	is := assert.New(t)
 
-	hbpm := NewHelmBinaryPackageManager("/tmp/abc")
+	path, err := getHelmBinaryPath()
+	is.NoError(err, "helm binary must exist in path to run tests")
+
+	hbpm := NewHelmBinaryPackageManager(path)
 
 	t.Run("successfully installs nginx chart with name test-nginx", func(t *testing.T) {
 		// helm install test-nginx --repo https://charts.bitnami.com/bitnami nginx
