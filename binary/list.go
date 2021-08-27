@@ -29,7 +29,7 @@ func (hbpm *helmBinaryPackageManager) List(listOpts options.ListOptions) ([]rele
 	}
 
 	response := []release.ReleaseElement{}
-	err = json.Unmarshal([]byte(result), &response)
+	err = json.Unmarshal(result, &response)
 	if err != nil {
 		return []release.ReleaseElement{}, errors.Wrap(err, "failed to unmarshal helm list response to releastElement list")
 	}

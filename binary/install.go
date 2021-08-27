@@ -33,7 +33,7 @@ func (hbpm *helmBinaryPackageManager) Install(installOpts options.InstallOptions
 	}
 
 	response := &release.Release{}
-	err = json.Unmarshal([]byte(result), &response)
+	err = json.Unmarshal(result, &response)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to unmarshal helm install response to Release struct")
 	}

@@ -2,6 +2,8 @@ package binary
 
 import (
 	"os"
+	"os/exec"
+	"path/filepath"
 	"testing"
 
 	"github.com/portainer/libhelm/options"
@@ -28,11 +30,27 @@ func createValuesFile(values string) (string, error) {
 	return file.Name(), nil
 }
 
+// getHelmBinaryPath is helper function to get local helm binary path (if helm is in path)
+func getHelmBinaryPath() (string, error) {
+	path, err := exec.LookPath("helm")
+	if err != nil {
+		return "", err
+	}
+	dir, err := filepath.Abs(filepath.Dir(path))
+	if err != nil {
+		return "", err
+	}
+	return dir, nil
+}
+
 func Test_Install(t *testing.T) {
 	ensureIntegrationTest(t)
 	is := assert.New(t)
 
-	hbpm := NewHelmBinaryPackageManager("/tmp/abc")
+	path, err := getHelmBinaryPath()
+	is.NoError(err, "helm binary must exist in path to run tests")
+
+	hbpm := NewHelmBinaryPackageManager(path)
 
 	t.Run("successfully installs nginx chart with name test-nginx", func(t *testing.T) {
 		// helm install test-nginx --repo https://charts.bitnami.com/bitnami nginx
@@ -75,6 +93,19 @@ func Test_Install(t *testing.T) {
 		}
 		release, err := hbpm.Install(installOpts)
 		defer hbpm.run("uninstall", []string{"test-nginx-2"})
+
+		is.NoError(err, "should successfully install release", release)
+	})
+
+	t.Run("successfully installs portainer chart with name portainer-test", func(t *testing.T) {
+		// helm install portainer-test portainer --repo https://portainer.github.io/k8s/
+		installOpts := options.InstallOptions{
+			Name:  "portainer-test",
+			Chart: "portainer",
+			Repo:  "https://portainer.github.io/k8s/",
+		}
+		release, err := hbpm.Install(installOpts)
+		defer hbpm.run("uninstall", []string{installOpts.Name})
 
 		is.NoError(err, "should successfully install release", release)
 	})
