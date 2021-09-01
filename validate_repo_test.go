@@ -29,7 +29,7 @@ func Test_ValidateHelmRepositoryURL(t *testing.T) {
 		{"bitnami helm repo", "https://charts.bitnami.com/bitnami/", false},
 		{"gitlap helm repo", "https://charts.gitlab.io/", false},
 		{"portainer helm repo", "https://portainer.github.io/k8s/", false},
-		{"bitnami helm repo", "https://helm.elastic.co/", false},
+		{"elastic helm repo", "https://helm.elastic.co/", false},
 	}
 
 	for _, test := range tests {
