@@ -1,18 +1,14 @@
 package libhelm
 
 import (
-	"os"
 	"testing"
 
+	"github.com/libhelm/libhelmtest"
 	"github.com/stretchr/testify/assert"
 )
 
-// To run this test
-// export INTEGRATION_TEST=1
-// go test -v
-
 func Test_ValidateHelmRepositoryURL(t *testing.T) {
-	ensureIntegrationTest(t)
+	libhelmtest.EnsureIntegrationTest(t)
 	is := assert.New(t)
 
 	tests := []struct {
@@ -22,11 +18,13 @@ func Test_ValidateHelmRepositoryURL(t *testing.T) {
 	}{
 		{"blank", "", true},
 		{"slashes", "//", true},
+		{"slash", "/", true},
 		{"invalid scheme", "garbage://a.b.c", true},
 		{"invalid domain", "https://invaliddomain/", true},
 		{"not helm repo", "http://google.com", true},
 		{"not valid repo with trailing slash", "http://google.com/", true},
-		{"bitnami helm repo", "https://charts.bitnami.com/bitnami", false},
+		{"not valid repo with trailing slashes", "http://google.com////", true},
+		{"bitnami helm repo", "https://charts.bitnami.com/bitnami/", false},
 		{"gitlap helm repo", "https://charts.gitlab.io/", false},
 		{"portainer helm repo", "https://portainer.github.io/k8s/", false},
 		{"bitnami helm repo", "https://helm.elastic.co/", false},
@@ -44,11 +42,5 @@ func Test_ValidateHelmRepositoryURL(t *testing.T) {
 				is.NoError(err, "no error expected: %s", test.url)
 			}
 		})
-	}
-}
-
-func ensureIntegrationTest(t *testing.T) {
-	if _, ok := os.LookupEnv("INTEGRATION_TEST"); !ok {
-		t.Skip("skip an integration test")
 	}
 }
