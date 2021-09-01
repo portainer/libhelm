@@ -7,15 +7,29 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type validationTestCase struct {
+	name    string
+	url     string
+	invalid bool
+}
+
+func validateUrl(test validationTestCase, t *testing.T) {
+	is := assert.New(t)
+	t.Run(test.name, func(t *testing.T) {
+		t.Parallel()
+		err := ValidateHelmRepositoryURL(test.url)
+		if test.invalid {
+			is.Errorf(err, "error expected: %s", test.url)
+		} else {
+			is.NoError(err, "no error expected: %s", test.url)
+		}
+	})
+}
+
 func Test_ValidateHelmRepositoryURL(t *testing.T) {
 	libhelmtest.EnsureIntegrationTest(t)
-	is := assert.New(t)
 
-	tests := []struct {
-		name    string
-		url     string
-		invalid bool
-	}{
+	tests := []validationTestCase{
 		{"blank", "", true},
 		{"slashes", "//", true},
 		{"slash", "/", true},
@@ -31,16 +45,6 @@ func Test_ValidateHelmRepositoryURL(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		// Copy these range vars which are pass by reference.
-		test := test
-		t.Run(test.name, func(t *testing.T) {
-			t.Parallel()
-			err := ValidateHelmRepositoryURL(test.url)
-			if test.invalid {
-				is.Errorf(err, "error expected: %s", test.url)
-			} else {
-				is.NoError(err, "no error expected: %s", test.url)
-			}
-		})
+		validateUrl(test, t)
 	}
 }
