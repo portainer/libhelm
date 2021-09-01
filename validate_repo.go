@@ -20,11 +20,11 @@ func ValidateHelmRepositoryURL(repoUrl string) error {
 
 	url, err := url.ParseRequestURI(repoUrl)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("invalid chart URL format: %s", repoUrl))
+		return errors.Wrap(err, fmt.Sprintf("invalid helm chart URL: %s", repoUrl))
 	}
 
 	if !strings.EqualFold(url.Scheme, "http") && !strings.EqualFold(url.Scheme, "https") {
-		return errors.New(fmt.Sprintf("invalid chart URL format: %s", repoUrl))
+		return errors.New(fmt.Sprintf("invalid helm chart URL: %s", repoUrl))
 	}
 
 	url.Path = path.Join(url.Path, "index.yaml")
