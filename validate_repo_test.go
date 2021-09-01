@@ -3,7 +3,7 @@ package libhelm
 import (
 	"testing"
 
-	"github.com/libhelm/libhelmtest"
+	"github.com/portainer/libhelm/libhelmtest"
 	"github.com/stretchr/testify/assert"
 )
 
