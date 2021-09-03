@@ -2,12 +2,9 @@ package binary
 
 import (
 	"bytes"
-	"fmt"
-	"log"
 	"os/exec"
 	"path"
 	"runtime"
-	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/portainer/libhelm/options"
@@ -51,8 +48,6 @@ func (hbpm *helmBinaryPackageManager) run(command string, args []string) ([]byte
 	var stderr bytes.Buffer
 	cmd := exec.Command(helmPath, cmdArgs...)
 	cmd.Stderr = &stderr
-
-	log.Println(fmt.Sprintf("[helm] executing helm command: %s %s", helmPath, strings.Join(cmdArgs, " ")))
 
 	output, err := cmd.Output()
 	if err != nil {
