@@ -5,7 +5,10 @@ package libhelm
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"net/url"
+	"path"
 	"time"
 
 	"github.com/pkg/errors"
@@ -55,7 +58,13 @@ func SearchRepo(searchRepoOpts options.SearchRepoOptions) ([]byte, error) {
 		Timeout: 60 * time.Second,
 	}
 
-	resp, err := client.Get(searchRepoOpts.Repo + "/index.yaml")
+	url, err := url.ParseRequestURI(searchRepoOpts.Repo)
+	if err != nil {
+		return nil, errors.Wrap(err, fmt.Sprintf("invalid helm chart URL: %s", searchRepoOpts.Repo))
+	}
+
+	url.Path = path.Join(url.Path, "index.yaml")
+	resp, err := client.Get(url.String())
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get index file")
 	}
