@@ -1,4 +1,4 @@
-package libhelm
+package binary
 
 // Package common implements common functionality for the helm.
 // The functionality does not rely on the implementation of `HelmPackageManager`
@@ -45,7 +45,7 @@ type Entry struct {
 // SearchRepo downloads the `index.yaml` file for specified repo, parses it and returns JSON to caller.
 // The functionality is similar to that of what `helm search repo [chart] --repo <repo>` CLI runs;
 // this approach is used instead since the `helm search repo` requires a repo to be added to the global helm cache
-func SearchRepo(searchRepoOpts options.SearchRepoOptions) ([]byte, error) {
+func (hbpm *helmBinaryPackageManager) SearchRepo(searchRepoOpts options.SearchRepoOptions) ([]byte, error) {
 	if searchRepoOpts.Repo == "" {
 		return nil, errRequiredSearchOptions
 	}
