@@ -1,4 +1,4 @@
-package libhelm
+package binary
 
 import (
 	"testing"
@@ -11,6 +11,8 @@ import (
 func Test_SearchRepo(t *testing.T) {
 	libhelmtest.EnsureIntegrationTest(t)
 	is := assert.New(t)
+
+	hpm := NewHelmBinaryPackageManager("")
 
 	type testCase struct {
 		name    string
@@ -30,7 +32,7 @@ func Test_SearchRepo(t *testing.T) {
 		func(tc testCase) {
 			t.Run(tc.name, func(t *testing.T) {
 				t.Parallel()
-				response, err := SearchRepo(options.SearchRepoOptions{tc.url})
+				response, err := hpm.SearchRepo(options.SearchRepoOptions{tc.url})
 				if tc.invalid {
 					is.Errorf(err, "error expected: %s", tc.url)
 				} else {

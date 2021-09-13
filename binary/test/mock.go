@@ -1,9 +1,14 @@
 package test
 
 import (
+	"encoding/json"
+	"strings"
+
+	"github.com/pkg/errors"
 	"github.com/portainer/libhelm"
 	"github.com/portainer/libhelm/options"
 	"github.com/portainer/libhelm/release"
+	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -86,4 +91,45 @@ func (hpm *helmMockPackageManager) Uninstall(uninstallOpts options.UninstallOpti
 // List a helm chart (not thread safe)
 func (hpm *helmMockPackageManager) List(listOpts options.ListOptions) ([]release.ReleaseElement, error) {
 	return mockCharts, nil
+}
+
+const mockPortainerIndex = `apiVersion: v1
+entries:
+  portainer:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2020-12-01T21:51:37.367634957Z"
+    description: Helm chart used to deploy the Portainer for Kubernetes
+    digest: f0e13dd3e7a05d17cb35c7879ffa623fd43b2c10ca968203e302b7a6c2764ddb
+    home: https://www.portainer.io
+    icon: https://github.com/portainer/portainer/raw/develop/app/assets/ico/apple-touch-icon.png
+    maintainers:
+    - email: davidy@funkypenguin.co.nz
+      name: funkypenguin
+      url: https://www.funkypenguin.co.nz
+    name: portainer
+    sources:
+    - https://github.com/portainer/k8s
+    type: application
+    urls:
+    - https://github.com/portainer/k8s/releases/download/portainer-1.0.6/portainer-1.0.6.tgz
+    version: 1.0.6
+generated: "2020-08-19T00:00:46.754739363Z"`
+
+func (hbpm *helmMockPackageManager) SearchRepo(searchRepoOpts options.SearchRepoOptions) ([]byte, error) {
+	// Always return the same repo data no matter what
+	reader := strings.NewReader(mockPortainerIndex)
+
+	var file release.File
+	err := yaml.NewDecoder(reader).Decode(&file)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to decode index file")
+	}
+
+	result, err := json.Marshal(file)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to marshal index file")
+	}
+
+	return result, nil
 }
