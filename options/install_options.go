@@ -7,5 +7,6 @@ type InstallOptions struct {
 	Repo                    string
 	Wait                    bool
 	ValuesFile              string
+	PostRenderer            string
 	KubernetesClusterAccess *KubernetesClusterAccess
 }
