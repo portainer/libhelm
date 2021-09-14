@@ -5,6 +5,7 @@ type InstallOptions struct {
 	Chart                   string
 	Namespace               string
 	Repo                    string
+	Wait                    bool
 	ValuesFile              string
 	KubernetesClusterAccess *KubernetesClusterAccess
 }
