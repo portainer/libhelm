@@ -32,7 +32,7 @@ func Test_SearchRepo(t *testing.T) {
 		func(tc testCase) {
 			t.Run(tc.name, func(t *testing.T) {
 				t.Parallel()
-				response, err := hpm.SearchRepo(options.SearchRepoOptions{tc.url})
+				response, err := hpm.SearchRepo(options.SearchRepoOptions{Repo: tc.url})
 				if tc.invalid {
 					is.Errorf(err, "error expected: %s", tc.url)
 				} else {
