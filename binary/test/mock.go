@@ -18,6 +18,13 @@ const (
 	MockDataValues = "mock-values"
 )
 
+const (
+	MockReleaseHooks    = "mock-release-hooks"
+	MockReleaseManifest = "mock-release-manifest"
+	MockReleaseNotes    = "mock-release-notes"
+	MockReleaseValues   = "mock-release-values"
+)
+
 // helmMockPackageManager is a test package for helm related http handler testing
 // Note: this package currently uses a slice in a way that is not thread safe.
 // Do not use this package for concurrent tests.
@@ -76,6 +83,24 @@ func (hpm *helmMockPackageManager) Show(showOpts options.ShowOptions) ([]byte, e
 		return []byte(MockDataValues), nil
 	}
 	return nil, nil
+}
+
+// Get release details - all, hooks, manifest, notes and values
+func (hpm *helmMockPackageManager) Get(getOpts options.GetOptions) ([]byte, error) {
+	switch getOpts.ReleaseResource {
+	case options.GetAll:
+		return []byte(strings.Join([]string{MockReleaseHooks, MockReleaseManifest, MockReleaseNotes, MockReleaseValues}, "---\n")), nil
+	case options.GetHooks:
+		return []byte(MockReleaseHooks), nil
+	case options.GetManifest:
+		return []byte(MockReleaseManifest), nil
+	case options.GetNotes:
+		return []byte(MockReleaseNotes), nil
+	case options.GetValues:
+		return []byte(MockReleaseValues), nil
+	default:
+		return nil, errors.New("invalid release resource")
+	}
 }
 
 // Uninstall a helm chart (not thread safe)
