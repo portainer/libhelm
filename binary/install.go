@@ -26,6 +26,12 @@ func (hbpm *helmBinaryPackageManager) Install(installOpts options.InstallOptions
 	if installOpts.ValuesFile != "" {
 		args = append(args, "--values", installOpts.ValuesFile)
 	}
+	if installOpts.Wait {
+		args = append(args, "--wait")
+	}
+	if installOpts.PostRenderer != "" {
+		args = append(args, "--post-renderer", installOpts.PostRenderer)
+	}
 
 	result, err := hbpm.runWithKubeConfig("install", args, installOpts.KubernetesClusterAccess)
 	if err != nil {
