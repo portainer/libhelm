@@ -37,8 +37,7 @@ func ValidateHelmRepositoryURL(repoUrl string) error {
 		return errors.Wrapf(err, invalidChartRepo, repoUrl)
 	}
 
-	// Some servers return odd responses.  We need to check more than just content length to determine failure
-	if res.ContentLength < 0 || res.StatusCode > 400 {
+	if res.StatusCode > 400 {
 		return errors.Errorf(invalidChartRepo, repoUrl)
 	}
 
