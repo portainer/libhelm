@@ -32,12 +32,14 @@ func ValidateHelmRepositoryURL(repoUrl string) error {
 	var client = &http.Client{
 		Timeout: time.Second * 10,
 	}
-	res, err := client.Head(url.String())
+	response, err := client.Head(url.String())
 	if err != nil {
 		return errors.Wrapf(err, invalidChartRepo, repoUrl)
 	}
 
-	if res.StatusCode > 400 {
+	// Success is indicated with 2xx status codes
+	statusOK := response.StatusCode >= 200 && response.StatusCode < 300
+	if !statusOK {
 		return errors.Errorf(invalidChartRepo, repoUrl)
 	}
 
