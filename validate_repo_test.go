@@ -30,6 +30,7 @@ func Test_ValidateHelmRepositoryURL(t *testing.T) {
 		{"gitlap helm repo", "https://charts.gitlab.io/", false},
 		{"portainer helm repo", "https://portainer.github.io/k8s/", false},
 		{"elastic helm repo", "https://helm.elastic.co/", false},
+		{"redirect", "https://charts.jetstack.io/", false},
 	}
 
 	for _, test := range tests {
