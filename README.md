@@ -1,7 +1,7 @@
 # DEPRECATION NOTICE
 
 This repository is deprecated and is now read-only. It is now being maintained at the new location:
-http://github.com/portainer/portainer/pkg/libhelm
+https://github.com/portainer/portainer/tree/develop/pkg/libhelm
 
 References to this repository should be to the above location.
 
